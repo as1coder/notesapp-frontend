@@ -7,6 +7,9 @@ function App() {
   const [inputValue, setinputValue] = useState('')
   const [inputText, setinputText] = useState([])
 
+  const API_URL = 'https://notesapp-backend-jpux.onrender.com';
+
+
 
   const handleEdit = (id) => {
     const noteToEdit = inputText.find(note => note._id === !id);
@@ -18,7 +21,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://notesapp-backend-jpux.onrender.com/api/notes/${id}`);
+      await axios.delete(`${API_URL}/api/notes${id}`);
       setinputText(inputText.filter((note) => note._id !== id));
     } catch (err) {
       console.error('Error deleting note:', err);
@@ -30,7 +33,7 @@ function App() {
     if (inputValue.trim() === '') return;
 
     try {
-      const res = await axios.post('http://notesapp-backend-jpux.onrender.com/api/notes', {
+      const res = await axios.post(`${API_URL}/api/notes`, {
         text: inputValue
       });
 
@@ -45,7 +48,7 @@ function App() {
     if (updatedText.trim() === '') return;
 
     try {
-      const res = await axios.put(`http://notesapp-backend-jpux.onrender.com/api/notes/${id}`, {
+      const res = await axios.put(`${API_URL}/api/notes/${id}`, {
         text: updatedText
       });
 
@@ -60,7 +63,7 @@ function App() {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const res = await axios.get('http://notesapp-backend-jpux.onrender.com/api/notes');
+        const res = await axios.get(`${API_URL}/api/notes`);
         setinputText(res.data);
       } catch (err) {
         console.error('Error fetching notes:', err);
