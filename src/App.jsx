@@ -21,7 +21,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_URL}/api/notes${id}`);
+      await axios.delete(`${API_URL}/api/notes/${id}`);
       setinputText(inputText.filter((note) => note._id !== id));
     } catch (err) {
       console.error('Error deleting note:', err);
