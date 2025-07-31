@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect ,useRef } from 'react'
 import Notetext from './component/notetext'
 import './App.css'
 import axios from 'axios'
@@ -6,13 +6,14 @@ import axios from 'axios'
 function App() {
   const [inputValue, setinputValue] = useState('')
   const [inputText, setinputText] = useState([])
+  const loaderRef = useRef(null)
 
   const API_URL = 'https://notesapp-backend-jpux.onrender.com';
 
 
 
   const handleEdit = (id) => {
-    const noteToEdit = inputText.find(note => note._id === !id);
+    const noteToEdit = inputText.find(note => note._id === id);
     if (noteToEdit) {
       setinputText(noteToEdit.text)
     }
@@ -63,10 +64,14 @@ function App() {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
+        loaderRef.current.style.display =  'block';
         const res = await axios.get(`${API_URL}/api/notes`);
         setinputText(res.data);
       } catch (err) {
         console.error('Error fetching notes:', err);
+      }
+      finally {
+        loaderRef.current.style.display = 'none';
       }
     };
 
@@ -93,6 +98,11 @@ function App() {
 
 
         <div>
+
+           <div ref={loaderRef} style={{ fontSize: '20px', fontWeight: 'bold' }}>
+        Loading...
+      </div>
+
           {inputText.map((note) => (
 
             <Notetext key={note._id}
